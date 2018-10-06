@@ -20,6 +20,7 @@ public class EmployeeController {
 
     /**
      * API used to create a Employee
+     *
      * @param employee
      * @return ResponseEntity of Employee
      */
@@ -29,8 +30,25 @@ public class EmployeeController {
         return ResponseEntity.ok(java.util.Optional.ofNullable(save));
     }
 
+    @PutMapping("/employees")
+    public ResponseEntity<Optional<Employee>> updateEmployee(@RequestBody Employee employee) {
+
+        Optional<Employee> byId = employeeRepo.findById(employee.getEmployeeId());
+        if (byId.isPresent()) {
+            Employee emp = byId.get();
+            emp.setFirstName(employee.getFirstName());
+            emp.setLastName(employee.getLastName());
+            final Employee save = employeeRepo.saveAndFlush(emp);
+            return ResponseEntity.ok(java.util.Optional.ofNullable(save));
+        }else {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+
     /**
      * API used to create bulk Employees
+     *
      * @param employees
      * @return return number of employees created.
      */
@@ -44,6 +62,7 @@ public class EmployeeController {
 
     /**
      * API used to get/display all Employees
+     *
      * @return list of employees
      */
     @GetMapping("/employees")
@@ -54,6 +73,7 @@ public class EmployeeController {
 
     /**
      * API used to find employee based on employeeId
+     *
      * @param employeeId
      * @return if found return employee or else empty employee object
      */
@@ -63,9 +83,9 @@ public class EmployeeController {
 
     }
 
-
     /**
      * API used to find employee based on employee firstname
+     *
      * @param firstname
      * @return if found return employee or else empty employee object
      */
@@ -73,8 +93,24 @@ public class EmployeeController {
     @GetMapping("/employees/{firstname:[a-zA-Z]+}")
     public ResponseEntity<Employee> employeeByFirstName(@PathVariable String firstname) {
         return buildResponse(employeeRepo.findByFirstNameIgnoreCase(firstname));
-
     }
+
+    /**
+     * This API is used to delete employee based on the employeeId
+     *
+     * @param employeeId
+     * @return String stating deletion operation along with different status codes
+     */
+    @DeleteMapping("/employees/{employeeId:[0-9]+}")
+    public ResponseEntity<String> delete(@PathVariable Integer employeeId) {
+        try {
+            employeeRepo.deleteById(employeeId);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Couldn\'t Delete");
+        }
+        return ResponseEntity.ok("Deleted!");
+    }
+
 
     private ResponseEntity<Employee> buildResponse(Optional<Employee> employee) {
         if (employee.isPresent()) {

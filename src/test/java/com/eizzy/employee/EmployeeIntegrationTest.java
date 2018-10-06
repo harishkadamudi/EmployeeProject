@@ -8,7 +8,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.json.GsonTester;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.*;
@@ -36,7 +35,6 @@ public class EmployeeIntegrationTest {
 
     HttpHeaders headers = new HttpHeaders();
 
-    GsonTester<Employee> gsonTester;
     @Autowired
     private MockMvc mvc;
 
@@ -80,6 +78,18 @@ public class EmployeeIntegrationTest {
 
         HttpEntity<Employee> employeeHttpEntity = new HttpEntity<Employee>(alex,headers);
         ResponseEntity<String> response = restTemplate.exchange(buildurl("/employees"), HttpMethod.POST, employeeHttpEntity, String.class);
+
+        assertThat(response.getStatusCode().is2xxSuccessful());
+    }
+
+    @Test
+    public void whenPutEmployee_thenUpdateEmployee() throws Exception {
+        Employee alex = new Employee();
+        alex.setFirstName("Test");
+        alex.setLastName("Test");
+
+        HttpEntity<Employee> employeeHttpEntity = new HttpEntity<Employee>(alex,headers);
+        ResponseEntity<String> response = restTemplate.exchange(buildurl("/employees"), HttpMethod.PUT, employeeHttpEntity, String.class);
 
         assertThat(response.getStatusCode().is2xxSuccessful());
     }
