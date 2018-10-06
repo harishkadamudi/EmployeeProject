@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface EmployeeRepo extends JpaRepository<Employee,Integer>{
+public interface EmployeeRepo extends JpaRepository<Employee, Integer> {
 
     Optional<Employee> findByFirstNameIgnoreCase(String firstName);
 }
