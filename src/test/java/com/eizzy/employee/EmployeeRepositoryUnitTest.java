@@ -30,7 +30,7 @@ public class EmployeeRepositoryUnitTest {
         Employee employee = new Employee();
         employee.setFirstName("Test FirstName");
         employee.setLastName("Test LastName");
-
+        employee.setEmail("email@gmail.com");
         entityManager.persist(employee);
         entityManager.flush();
 

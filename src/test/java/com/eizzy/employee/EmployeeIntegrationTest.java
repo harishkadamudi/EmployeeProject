@@ -49,6 +49,7 @@ public class EmployeeIntegrationTest {
         Employee employee = new Employee();
         employee.setFirstName("Test FirstName");
         employee.setLastName("Test LastName");
+        employee.setEmail("xyz@gmail.com");
 
         mvc.perform(post("/employees")
                 .contentType(MediaType.APPLICATION_JSON_VALUE).content(asJsonString(employee)))
@@ -62,7 +63,7 @@ public class EmployeeIntegrationTest {
         Employee employee = new Employee();
         employee.setFirstName("Test FirstName");
         employee.setLastName("Test LastName");
-
+        employee.setEmail("xyz@gmail.com");
         mvc.perform(get("/employees")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -75,7 +76,7 @@ public class EmployeeIntegrationTest {
         Employee alex = new Employee();
         alex.setFirstName("Test");
         alex.setLastName("Test");
-
+        alex.setEmail("xyz@gmail.com");
         HttpEntity<Employee> employeeHttpEntity = new HttpEntity<Employee>(alex,headers);
         ResponseEntity<String> response = restTemplate.exchange(buildurl("/employees"), HttpMethod.POST, employeeHttpEntity, String.class);
 
@@ -87,7 +88,7 @@ public class EmployeeIntegrationTest {
         Employee alex = new Employee();
         alex.setFirstName("Test");
         alex.setLastName("Test");
-
+        alex.setEmail("xyz@gmail.com");
         HttpEntity<Employee> employeeHttpEntity = new HttpEntity<Employee>(alex,headers);
         ResponseEntity<String> response = restTemplate.exchange(buildurl("/employees"), HttpMethod.PUT, employeeHttpEntity, String.class);
 
